@@ -1,0 +1,19 @@
+<launch>
+  
+
+  <arg name="enable_mavlink_interface" default="true" />
+  <arg name="enable_ground_truth" default="true" /> 
+  <arg name="enable_logging" default="false" />
+
+  <!-- Define the model argument -->
+  <arg name="model" default="$(find payload_description)/urdf/payload2.urdf.xacro" />
+  <arg name="rvizconfig" default="$(find payload_description)/rviz/display.rviz" />
+
+  <!-- Load the robot description parameter -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg model)' enable_mavlink_interface:=$(arg enable_mavlink_interface) enable_ground_truth:=$(arg enable_ground_truth) enable_logging:=$(arg enable_logging)" />
+
+  <!-- Other launch configurations -->
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+</launch>

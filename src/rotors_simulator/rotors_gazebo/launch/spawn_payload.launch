@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="model" default="$(find payload_description)/urdf/payload.urdf.xacro"/>
+  <arg name="tf_prefix" default="$(optenv ROS_NAMESPACE)"/>
+  <arg name="x" default="0.0"/>
+  <arg name="y" default="0.0"/>
+  <arg name="z" default="0.1"/>
+  <arg name="enable_logging" default="false"/>
+  <arg name="enable_ground_truth" default="true"/>
+  <arg name="log_file" default="payload"/>
+  <arg name="wait_to_record_bag" default="false"/>
+  <arg name="enable_mavlink_interface" default="false"/>
+
+  <!-- send the robot XML to param server -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg model)' enable_mavlink_interface:=$(arg enable_mavlink_interface) enable_ground_truth:=$(arg enable_ground_truth) enable_logging:=$(arg enable_logging)" />
+  <param name="tf_prefix" type="string" value="$(arg tf_prefix)" />
+
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="spawn_payload" pkg="gazebo_ros" type="spawn_model"
+   args="-param robot_description
+         -urdf
+         -x $(arg x)
+         -y $(arg y)
+         -z $(arg z)
+         -model payload"
+   respawn="false" output="screen">
+  </node>
+</launch>

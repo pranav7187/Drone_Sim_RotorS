@@ -1,0 +1,8 @@
+prefix=/home/pranav/catkin_ws/devel/.private/payload_description
+
+Name: payload_description
+Description: Description of payload_description
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
